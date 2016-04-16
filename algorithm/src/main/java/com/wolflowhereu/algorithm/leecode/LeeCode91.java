@@ -1,5 +1,6 @@
 package com.wolflowhereu.algorithm.leecode;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -16,25 +17,29 @@ public class LeeCode91 {
      * @return
      */
     public int numDecodings(String s) {
-        if (s.length() <= 0 || s.charAt(0) == '0') return 0;
-        if (s.length() == 1) return 1;
-        switch (s.charAt(0)) {
-            case '1':
-            case '2':
-                return numDecodings(s.substring(1)) + numDecodings(s.substring(2));
-            default:
-                return numDecodings(s.substring(1));
+        if (s == null || s.length() <= 0 || s.charAt(0) == '0') return 0;
+        int backNum = s.charAt(s.length() - 1) - '0', sum = 1, backSum = 1;
+
+        for (int i = s.length() - 2; i >= 0; i--) {
+            int nowNum = s.charAt(i) - '0';
+            if (nowNum != 1 && nowNum != 2 && backNum == 0) return 0;
+            if ((nowNum == 1 || nowNum == 2) && backNum > 0 && backNum < 10 && (nowNum * 10 + backNum) < 27) {
+                sum += backSum;
+                backSum = sum - backSum;
+            } else backSum = sum;
+            if (backNum == 0) nowNum *= 10;
+            backNum = nowNum;
         }
+        return sum;
     }
 
     @Test
     public void test() {
-        System.out.println(numDecodings("11"));
-        System.out.println(numDecodings("1"));
-        System.out.println(numDecodings("111"));
-        System.out.println(numDecodings("261"));
-        System.out.println(numDecodings("271"));
-        System.out.println(numDecodings("9"));
-        System.out.println(numDecodings("101"));
+        Assert.assertEquals(numDecodings("0"), 0);
+        Assert.assertEquals(numDecodings("10"), 1);
+        Assert.assertEquals(numDecodings("11"), 2);
+        Assert.assertEquals(numDecodings("110"), 1);
+        Assert.assertEquals(numDecodings("230"), 0);
+        Assert.assertEquals(numDecodings("24726"), 4);
     }
 }
