@@ -10,6 +10,12 @@ public class LeeCode106 {
 
     int p = 0, i = 0;
 
+    /**
+     * https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+     * @param inorder
+     * @param postorder
+     * @return
+     */
     public TreeNode buildTree(int[] inorder, int[] postorder) {
         return buildTree(inorder, postorder, Integer.MIN_VALUE - 111, null);
     }
